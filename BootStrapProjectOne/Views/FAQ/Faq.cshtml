@@ -1,0 +1,116 @@
+﻿@model IEnumerable<BootStrapProjectOne.Models.Question>
+
+@{
+    ViewBag.Title = "FAQ";
+}
+
+<link href="~/css/myStyles.css" rel="stylesheet" />
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                FAQ
+                <small>Frequently Asked Questions</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    @Html.ActionLink("Home", "Index", "Home")
+
+                </li>
+                <li class="active">FAQ</li>
+                <input id="FAQCreate" type="button" style="margin-left: 20px;" value="New FAQ" class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("CreateFaq", "FAQ")'" />
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="accordion" class="panel-group">
+                @{ var iCount = 1; }
+
+                @foreach (var item in Model)
+                {
+                    iCount = iCount + 1;
+                    var sID = "collapse" + iCount;
+                    var sRef = "#collapse" + iCount;
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="@sRef" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle collapsed">
+                                    @Html.DisplayFor(modelItem => item.sQuestion)
+                                </a>
+                                <input id="FAQEdit" type="button" value="Edit" style="margin-left: 20px;" class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("EditQuestion", "FAQ", new { iCode = item.Question_ID })'" />
+                                <input id="CreateAnswer" type="button" value="Add Answer" style="margin-left: 20px;" class="btn btn-sm btn-info" onclick="location.href='@Url.Action("EditQuestion", "Other", new { iCode = item.Question_ID })'" />
+                                @*@Html.ActionLink("Edit", "EditPlayer", new { iCode = item.Player_Code }) |
+        @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                            </h4>
+                        </div>
+                        <div class="panel-collapse collapse" id="@sID" style="height: 0px;">
+                            <div class="panel-body">
+                                It wasn't entirely obvious at first, actually.  After researching lots of other companies and really understanding each of them better, I was eventually attracted to the culture of the company and found that it matched my personality and interests really well.  That's when my dreams seemed to come true when they offered me an internship.
+                            </div>
+                        </div>
+                    </div>
+                }
+                @{ iCount = 0; }
+                @*<td>
+            @Html.DisplayFor(modelItem => item.Player_FName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Player_LName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Player_Team)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Player_Position)
+        </td>*@
+                @*<td>
+            </td>
+        </tr>*@
+                @*<div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a href="#collapseOne" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle collapsed">
+                                What interested you in the first place about the company you interned for?
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapseOne" style="height: 0px;">
+                        <div class="panel-body">
+                            It wasn't entirely obvious at first, actually.  After researching lots of other companies and really understanding each of them better, I was eventually attracted to the culture of the company and found that it matched my personality and interests really well.  That's when my dreams seemed to come true when they offered me an internship.
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a href="#collapseTwo" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle collapsed">
+                                What was the hardest part about trying to decide which company to intern at?
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapseTwo" style="height: 0px;">
+                        <div class="panel-body">
+                            Something that I think will always be hard in either an internship or a full-time job (especially as a business student) is that there are so many great options.  It's a good idea to learn as much as you can about each company, make as many connections with people in those companies, and then to seek inspiration as you weigh the different options.  At the end of the day, you just have to choose!'
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a href="#collapseThree" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle collapsed">
+                                What if I get an internship with a company and then decide that I don't like it?
+                            </a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapseThree">
+                        <div class="panel-body">
+                            Many companies, especially the Big 4 Accounting firms, will often take their interns and offer them a full-time job at the end of it.  It is always a possibility that you won't end up liking the kind of work that you'll do with them; however, no matter what role, company, location, or focus you are currently working with, there is always something valuable you can learn that will contribute to something bigger and better that you DO love.
+                        </div>
+                    </div>
+                </div>*@
+            </div>
+            </div>
+        </div>
+    </div>

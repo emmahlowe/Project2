@@ -1,0 +1,40 @@
+﻿@model BootStrapProjectOne.Models.Question
+
+@{
+    ViewBag.Title = "Create New FAQ";
+}
+
+<h2>Create Faq</h2>
+<link href="~/css/myStyles.css" rel="stylesheet" />
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>New Frequently Asked Question</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            @Html.LabelFor(model => model.sQuestion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.sQuestion, new { @class = "largeTextBox" })
+                @Html.ValidationMessageFor(model => model.sQuestion)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10" style="margin-top: 20px;">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+            <div class="col-md-offset-2" style="margin-top: 80px;">
+                @Html.ActionLink("Back to List", "FAQ", "FAQ")
+            </div>
+    </div>
+}
+
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
