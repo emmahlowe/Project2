@@ -1,0 +1,82 @@
+﻿@model BootStrapProjectOne.Models.Student
+
+@{
+    ViewBag.Title = "addStudent";
+}
+
+<h2>Add Student Internship</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Student</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+        <div class="form-group">
+            @Html.LabelFor(model => model.fName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.fName)
+                @Html.ValidationMessageFor(model => model.fName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.lName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.lName)
+                @Html.ValidationMessageFor(model => model.lName)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MAJOR_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MAJOR_ID)
+                @Html.ValidationMessageFor(model => model.MAJOR_ID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Company, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Company)
+                @Html.ValidationMessageFor(model => model.Company)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Experience, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Experience)
+                @Html.ValidationMessageFor(model => model.Experience)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Internship_Year, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Internship_Year)
+                @Html.ValidationMessageFor(model => model.Internship_Year)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add Internship" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+    <br />
+    @Html.ActionLink("Back to Home", "Index", "Home")
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

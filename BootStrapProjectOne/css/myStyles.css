@@ -1,0 +1,54 @@
+﻿/*
+    Authors: Kyle Harline, Emma Lowe, Jace Nelson, Branden Oberender
+    Date Created: 11/16/19
+    Description: This CSS document contains custom modifications to the styling
+    of our IS 403 Project 1 (& 2), especially on the Home, About, & Content pages.
+*/
+
+body {
+}
+
+.solidify {
+    background-color: lightseagreen;
+    padding-top: 8px;
+    padding-bottom: 10.5px;
+    border: solid 2px black;
+    border-radius: 12px;
+}
+
+.btn-primary:hover {
+    background-color: darkcyan !important;
+}
+
+.navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:focus {
+    background-color: darkcyan !important;
+}
+
+.navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus
+{
+    background-color: darkcyan !important;
+}
+
+.navbar-collapse, .navbar-inverse .navbar-form
+{
+    border-color: darkcyan !important;
+}
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus
+{
+    background-color: darkcyan !important;
+}
+
+.questionBox
+{
+    width: 200px;
+}
+
+.right {
+    position: absolute;
+    right: 30px;
+}
+
+.largeTextBox {
+    width: 800px;
+}
