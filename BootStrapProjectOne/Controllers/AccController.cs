@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BootStrapProjectOne.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,11 +9,81 @@ namespace BootStrapProjectOne.Controllers
 {
     public class AccController : Controller
     {
+       public static List<Student> lstStudents = new List<Student>();
+
         // GET: Acc
         public ActionResult Index()
         {
-            ViewBag.Student = "< div class='col-md-4 portfolio-item'> <a href = '@Url.Action('SingleItem','Portfolio')'> <img src = 'http://placehold.it/700x400' class='img-responsive'></a><h3> @Html.ActionLink('Project Name', 'SingleItem', 'Portfolio')</h3><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p> </div>";
+            return View(lstStudents);
+        }
+
+        [HttpGet]
+        public ActionResult EditStudent(int id)
+        {
+            Student oStudent = lstStudents.Find(x => x.StudID == id);
+            return View(oStudent);
+        }
+
+        [HttpPost]
+        public ActionResult EditStudent(Student myModel)
+        {
+            var obj = lstStudents.FirstOrDefault(x =>
+            x.StudID == myModel.StudID);
+            if (obj != null)
+            {
+                obj.StudID = myModel.StudID;
+                obj.fName = myModel.fName;
+                obj.lName = myModel.lName;
+                obj.Internship_Year = myModel.Internship_Year;
+                obj.Company = myModel.Company;
+                obj.MAJOR_ID = myModel.MAJOR_ID;
+                obj.Experience = myModel.Experience;
+                //obj.Picture = myModel.Picture; test
+            }
+
+            return View("Index", lstStudents);
+        }
+
+        [HttpGet]
+        public ActionResult AddStudent()
+        {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddStudent(Student myStudent)
+        {
+            if (ModelState.IsValid)
+            {
+                myStudent.StudID = lstStudents.Count() + 1;
+                lstStudents.Add(myStudent);
+                ViewBag.Student = myStudent.fName + myStudent.lName;
+                return RedirectToAction("Index", "Acc");
+            }
+            else
+            {
+                return View(myStudent);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult DeleteStudent(int id)
+        {
+            Student oStudent = lstStudents.Find(x => x.StudID == id);
+            return View(oStudent);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteStudent(Student myModel)
+        {
+            var obj = lstStudents.FirstOrDefault(x =>
+            x.StudID == myModel.StudID);
+            if (obj != null)
+            {
+                lstStudents.Remove(obj);
+            }
+
+            return View("Index", lstStudents);
         }
     }
 }

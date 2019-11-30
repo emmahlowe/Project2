@@ -233,6 +233,8 @@
     <Content Include="Views\IS\AddStudent.cshtml" />
     <Content Include="Views\IS\EditStudent.cshtml" />
     <Content Include="Views\IS\DeleteStudent.cshtml" />
+    <Content Include="Views\Acc\AddStudent.cshtml" />
+    <Content Include="Views\Acc\EditStudent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -267,9 +269,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\FAQ\Faq.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\IS\Index2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Acc\Index.cshtml" />
