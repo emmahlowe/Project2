@@ -43,9 +43,9 @@
                 @Html.DisplayFor(modelItem => item.Company): @Html.DisplayFor(modelItem => item.Experience)
             </p>
             <p>
-                @Html.ActionLink("Edit", "EditStudent", new { sCode = item.StudID }) |
-                @Html.ActionLink("Details", "Details", new { sCode = item.StudID }) |
-                @Html.ActionLink("Delete", "DeleteStudent", new { sCode = item.StudID })
+                @Html.ActionLink("Edit", "EditStudent", new { id = item.StudID }) |
+                @*@Html.ActionLink("Details", "Details", new { id = item.StudID }) |*@
+                @Html.ActionLink("Delete", "DeleteStudent", new { id = item.StudID })
             </p>
         </div>
     }

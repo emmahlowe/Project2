@@ -74,10 +74,9 @@ namespace BootStrapProjectOne.Controllers
         }
 
         [HttpPost]
-        public ActionResult DeleteStudent(Student myModel)
+        public ActionResult DeleteStudent(Student myModel, int id)
         {
-            var obj = lstStudents.FirstOrDefault(x =>
-            x.StudID == myModel.StudID);
+            var obj = lstStudents.FirstOrDefault(x => x.StudID == id);
             if (obj != null)
             {
                 lstStudents.Remove(obj);
