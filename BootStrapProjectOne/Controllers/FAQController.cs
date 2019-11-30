@@ -10,6 +10,9 @@ namespace BootStrapProjectOne.Controllers
     
     public class FAQController : Controller
     {
+        public static List<Answer> lstAnswers = new List<Answer>();
+        public static int QuestionID;
+
         public static List<Question> lstQuestions = new List<Question>()
         {
             new Question{ Question_ID = 1, sQuestion = "What interested you in the first place about the company you interned for?" },
@@ -20,6 +23,7 @@ namespace BootStrapProjectOne.Controllers
         
         public ActionResult Faq()
         {
+            ViewData["Answers"] = lstAnswers;
             return View(lstQuestions);
         }
 
@@ -33,6 +37,7 @@ namespace BootStrapProjectOne.Controllers
         public ActionResult CreateFaq(Question oQuestion)
         {
             oQuestion.Question_ID = lstQuestions.Count + 1;
+            ViewData["Answers"] = lstAnswers;
 
             if (ModelState.IsValid)
             {
@@ -72,7 +77,7 @@ namespace BootStrapProjectOne.Controllers
                     return RedirectToAction("Faq", "FAQ");
                 }
             }
-
+            ViewData["Answers"] = lstAnswers;
             return RedirectToAction("Faq", "FAQ");
         }
 
@@ -84,6 +89,42 @@ namespace BootStrapProjectOne.Controllers
         public ActionResult SideBar()
         {
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult AddAnswer(int id)//returns question id
+        {
+            QuestionID = id;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddAnswer(Answer myAnswer, int id) //returns answer model and question id
+        {
+            if (myAnswer.sAnswer != null)
+            {
+                Answer oAnswer = myAnswer;
+                oAnswer.Question_ID = QuestionID;
+                oAnswer.Answer_ID = lstAnswers.Count() + 1;
+                lstAnswers.Add(oAnswer); //add answer to list 
+                ViewData["Answers"] = lstAnswers; //passing data to the view
+                return View("Faq", lstQuestions);
+            }
+            else
+            {
+                return View();
+            }
+
+            //int iQuestions = lstQuestions.Count();
+            //var dictAnswers = new Dictionary<int, dynamic>();
+
+            //for (int iCount = 0; iCount < iQuestions; iCount++ )
+            //{
+            //    dictAnswers.Add(iCount, public static List<Answer> dictListAnswers = new List<Answer>() );
+                
+            //}
+
+            //array of lists. Each list is a list of the answers that belong to a given question.
         }
     }
 }

@@ -18,8 +18,7 @@ namespace BootStrapProjectOne.Models
         [Display(Name = "Answer")]
         [StringLength(9000, ErrorMessage = "Answer must be at least 1 character", MinimumLength = 1)]
         public string sAnswer { get; set; }
-
-        [Key]
+        
         [HiddenInput(DisplayValue = false)]
         public int Question_ID { get; set; }
 
