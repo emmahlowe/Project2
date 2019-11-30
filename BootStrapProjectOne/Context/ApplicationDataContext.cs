@@ -16,5 +16,7 @@ namespace BootStrapProjectOne.Context
         public System.Data.Entity.DbSet<AppUser> AppUsers { get; set; }
 
         public System.Data.Entity.DbSet<BootStrapProjectOne.Models.Student> Students { get; set; }
+
+        public System.Data.Entity.DbSet<BootStrapProjectOne.Models.Answer> Answers { get; set; }
     }
 }
