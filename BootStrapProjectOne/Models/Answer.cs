@@ -16,7 +16,7 @@ namespace BootStrapProjectOne.Models
 
         [Required(ErrorMessage = "Please enter an answer.")]
         [Display(Name = "Answer")]
-        [StringLength(9000, ErrorMessage = "Answer must be at least 1 character", MinimumLength = 1)]
+        [StringLength(900, ErrorMessage = "Answer must be at least 1 character", MinimumLength = 1)]
         public string sAnswer { get; set; }
         
         [HiddenInput(DisplayValue = false)]
