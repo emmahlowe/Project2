@@ -9,53 +9,30 @@ namespace BootStrapProjectOne.Controllers
 {
     public class FinController : Controller
     {
-        public static List<Student> lstaStudent = new List<Student>();
+        // GET: IS
+        public static List<Student> lstFINStudents = new List<Student>();
         // GET: Fin
         public ActionResult Index()
         {
-            return View(lstaStudent);
+            return View(lstFINStudents);
         }
+
 
         [HttpGet]
-        public ActionResult EditStudent(int sCode)
-        {
-            Student oStudent = lstaStudent.Find(x => x.StudID == sCode);
-            return View(oStudent);
-        }
-
-        [HttpPost]
-        public ActionResult EditStudent(Student myModel)
-        {
-            var obj = lstaStudent.FirstOrDefault(x =>
-            x.StudID == myModel.StudID);
-            if (obj != null)
-            {
-                obj.StudID = myModel.StudID;
-                obj.fName = myModel.fName;
-                obj.lName = myModel.lName;
-                obj.Internship_Year = myModel.Internship_Year;
-                obj.Company = myModel.Company;
-                obj.MAJOR_ID = myModel.MAJOR_ID;
-                obj.Experience = myModel.Experience;
-                //obj.Picture = myModel.Picture; test
-            }
-
-            return View("Index", lstaStudent);
-        }
-
-        [HttpGet]
-        public ActionResult addStudent()
+        public ActionResult AddStudent()
         {
             return View();
         }
 
         [HttpPost]
-        public ActionResult addStudent(Student myaStudent)
+        public ActionResult AddStudent(Student myaStudent)
         {
             if (ModelState.IsValid)
             {
-                lstaStudent.Add(myaStudent);
-                return RedirectToAction("Index", "Home");
+                myaStudent.StudID = lstFINStudents.Count() + 1;
+                lstFINStudents.Add(myaStudent);
+                ViewBag.Student = myaStudent.fName + myaStudent.lName;
+                return RedirectToAction("Index", "Fin");
             }
             else
             {
@@ -63,24 +40,54 @@ namespace BootStrapProjectOne.Controllers
             }
         }
 
+
         [HttpGet]
-        public ActionResult DeleteStudent(int sCode)
+        public ActionResult EditStudent(int sCode)
         {
-            Student oStudent = lstaStudent.Find(x => x.StudID == sCode);
+            Student oStudent = lstFINStudents.Find(x => x.StudID == sCode);
             return View(oStudent);
         }
 
         [HttpPost]
-        public ActionResult DeleteStudent(Student myModel)
+        public ActionResult EditStudent(Student myModel)
         {
-            var obj = lstaStudent.FirstOrDefault(x =>
+            var obj = lstFINStudents.FirstOrDefault(x =>
             x.StudID == myModel.StudID);
             if (obj != null)
             {
                 obj.StudID = myModel.StudID;
+                obj.fName = myModel.fName;
+                obj.lName = myModel.lName;
+                obj.MAJOR_ID = myModel.MAJOR_ID;
+                obj.Company = myModel.Company;
+                obj.Experience = myModel.Experience;
+                obj.Internship_Year = myModel.Internship_Year;
+
             }
 
-            return View("Index", lstaStudent);
+            return View("Index", lstFINStudents);
+        }
+
+
+        [HttpGet]
+        public ActionResult DeleteStudent(int sCode)
+        {
+            Student oStudent = lstFINStudents.Find(x => x.StudID == sCode);
+            return View(oStudent);
+        }
+
+
+        [HttpPost]
+        public ActionResult DeleteStudent(Student myModel, int sCode)
+        {
+            var obj2 = lstFINStudents.FirstOrDefault(x =>
+            x.StudID == sCode);
+            if (obj2 != null)
+            {
+                lstFINStudents.Remove(obj2);
+            }
+
+            return View("Index", lstFINStudents);
         }
 
     }

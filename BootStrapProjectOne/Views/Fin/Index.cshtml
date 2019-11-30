@@ -4,60 +4,49 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Show Students</h2>
 
-<p>
-    @Html.ActionLink("Add Student Internship", "addStudent")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.fName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.lName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MAJOR_ID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Company)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Experience)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Internship_Year)
-        </th>
-        <th></th>
-    </tr>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">
+                Finance
+                <small>Showcase Your Work</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li>
+                    @Html.ActionLink("Home", "Index", "Home")
+                </li>
+                <li>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.fName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.lName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MAJOR_ID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Company)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Experience)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Internship_Year)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "EditStudent", new { sCode=item.StudID }) |
-           
-            @Html.ActionLink("Delete", "DeleteStudent", new { sCode=item.StudID })
-        </td>
-    </tr>
-}
+                    @Html.ActionLink("Create New", "AddStudent")
 
-</table>
+                </li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 portfolio-item">
+            <a href="@Url.Action("SingleItem", "Portfolio")">
+                <img src="http://placehold.it/700x400" class="img-responsive">
+            </a>
+            <a href="@Url.Action("SingleItem", "Portfolio")">
+
+                <h3>
+                    @Html.DisplayFor(modelItem => item.fName) @Html.DisplayFor(modelItem => item.lName)
+                </h3>
+            </a>
+            <p>
+                @Html.DisplayFor(modelItem => item.Company): @Html.DisplayFor(modelItem => item.Experience)
+            </p>
+            <p>
+                @Html.ActionLink("Edit", "EditStudent", new { sCode = item.StudID }) |
+                @*@Html.ActionLink("Details", "Details", new { sCode = item.StudID }) |*@
+                @Html.ActionLink("Delete", "DeleteStudent", new { sCode = item.StudID })
+            </p>
+        </div>
+    }
+</div>

@@ -226,7 +226,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Fin\Index.cshtml" />
-    <Content Include="Views\Fin\addStudent.cshtml" />
+    <Content Include="Views\Fin\AddStudent.cshtml" />
     <Content Include="Views\Fin\EditStudent.cshtml" />
     <Content Include="Views\Fin\DeleteStudent.cshtml" />
     <Content Include="Views\IS\Index.cshtml" />
