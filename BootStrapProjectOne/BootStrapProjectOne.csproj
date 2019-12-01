@@ -169,6 +169,7 @@
     <Compile Include="Controllers\ISController.cs" />
     <Compile Include="Controllers\FAQController.cs" />
     <Compile Include="Controllers\PortfolioController.cs" />
+    <Compile Include="DAL\Project2Context.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

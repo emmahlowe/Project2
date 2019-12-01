@@ -58,7 +58,7 @@ namespace BootStrapProjectOne.Controllers
                 obj.StudID = myModel.StudID;
                 obj.fName = myModel.fName;
                 obj.lName = myModel.lName;
-                obj.MAJOR_ID = myModel.MAJOR_ID;
+                obj.Major_ID = myModel.Major_ID;
                 obj.Company = myModel.Company;
                 obj.Experience = myModel.Experience;
                 obj.Internship_Year = myModel.Internship_Year;
