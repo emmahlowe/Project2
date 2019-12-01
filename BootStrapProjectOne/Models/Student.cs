@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,7 @@ using System.Web.Mvc;
 
 namespace BootStrapProjectOne.Models
 {
+    [Table("Student")]
     public class Student
     {
         [Key]
@@ -25,7 +27,7 @@ namespace BootStrapProjectOne.Models
         public string lName { get; set; }
 
         [Display(Name = "Major")]
-        public string MAJOR_ID { get; set; } //this will be a drop down
+        public int Major_ID { get; set; } //this will be a drop down
         
         //[Display(Name = "Headshot")]
         //public Image Picture { get; set; }

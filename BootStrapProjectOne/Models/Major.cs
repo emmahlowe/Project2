@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace BootStrapProjectOne.Models
 {
+    [Table("Major")]
     public class Major
     {
         //[Table("Major")]

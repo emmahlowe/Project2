@@ -1,4 +1,5 @@
-﻿using BootStrapProjectOne.Models;
+﻿using BootStrapProjectOne.DAL;
+using BootStrapProjectOne.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,20 @@ namespace BootStrapProjectOne.Controllers
 {
     public class ISController : Controller
     {
+        private Project2Context db = new Project2Context();
         // GET: IS
         public static List<Student> lstISStudent = new List<Student>();
         // GET: Fin
         public ActionResult Index()
         {
-            return View(lstISStudent);
-        }
+            IEnumerable<Student> Students =
+                db.Database.SqlQuery<Student>("SELECT StudID, fName, lName, Company, Student.Major_ID, Experience, Internship_Year " +
+                    "FROM Student INNER JOIN Major on Student.Major_ID = Major.Major_ID " +
+                     "WHERE Major_Desc = 'Information Systems' " +
+                     "ORDER BY Student.lName, Student.fName ");
 
+            return View(Students);
+        }
 
         [HttpGet]
         public ActionResult AddStudent()
@@ -58,7 +65,7 @@ namespace BootStrapProjectOne.Controllers
                 obj.StudID = myModel.StudID;
                 obj.fName = myModel.fName;
                 obj.lName = myModel.lName;
-                obj.MAJOR_ID = myModel.MAJOR_ID;
+                obj.Major_ID = myModel.Major_ID;
                 obj.Company = myModel.Company;
                 obj.Experience = myModel.Experience;
                 obj.Internship_Year = myModel.Internship_Year;
