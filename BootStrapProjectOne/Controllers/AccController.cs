@@ -1,6 +1,8 @@
-﻿using BootStrapProjectOne.Models;
+﻿using BootStrapProjectOne.DAL;
+using BootStrapProjectOne.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -9,39 +11,17 @@ namespace BootStrapProjectOne.Controllers
 {
     public class AccController : Controller
     {
-       public static List<Student> lstStudents = new List<Student>();
-
-        // GET: Acc
+        private Project2Context db = new Project2Context();
+        
         public ActionResult Index()
         {
-            return View(lstStudents);
-        }
+            IEnumerable<Student> Students =
+                db.Database.SqlQuery<Student>("SELECT StudID, fName, lName, Company, Student.Major_ID, Experience, Internship_Year " +
+                    "FROM Student INNER JOIN Major on Student.Major_ID = Major.Major_ID " +
+                     "WHERE Major_Desc = 'Accounting' " +
+                     "ORDER BY Student.lName, Student.fName ");
 
-        [HttpGet]
-        public ActionResult EditStudent(int id)
-        {
-            Student oStudent = lstStudents.Find(x => x.StudID == id);
-            return View(oStudent);
-        }
-
-        [HttpPost]
-        public ActionResult EditStudent(Student myModel)
-        {
-            var obj = lstStudents.FirstOrDefault(x =>
-            x.StudID == myModel.StudID);
-            if (obj != null)
-            {
-                obj.StudID = myModel.StudID;
-                obj.fName = myModel.fName;
-                obj.lName = myModel.lName;
-                obj.Internship_Year = myModel.Internship_Year;
-                obj.Company = myModel.Company;
-                obj.Major_ID = myModel.Major_ID;
-                obj.Experience = myModel.Experience;
-                //obj.Picture = myModel.Picture; test
-            }
-
-            return View("Index", lstStudents);
+            return View(Students);
         }
 
         [HttpGet]
@@ -51,38 +31,73 @@ namespace BootStrapProjectOne.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddStudent(Student myStudent)
+        public ActionResult AddStudent([Bind(Include = "StudID, fName, lName, Major_ID, Company, Experience, Internship_Year")] Student students)
         {
             if (ModelState.IsValid)
             {
-                myStudent.StudID = lstStudents.Count() + 1;
-                lstStudents.Add(myStudent);
-                ViewBag.Student = myStudent.fName + myStudent.lName;
-                return RedirectToAction("Index", "Acc");
+                db.Students.Add(students);
+                db.SaveChanges();
+                return RedirectToAction("Index");
             }
             else
             {
-                return View(myStudent);
+                return View();
             }
         }
 
         [HttpGet]
-        public ActionResult DeleteStudent(int id)
+        public ActionResult EditStudent(int? sCode)
         {
-            Student oStudent = lstStudents.Find(x => x.StudID == id);
+            if (sCode != null)
+            {
+                IEnumerable<Student> students = //we are creating a collection of student_major model objects or a collection of data 
+                                db.Database.SqlQuery<Student>("SELECT Student.StudID, Student.fName, " +
+                "Student.lName, Student.Major_ID, Student.Company, Student.Experience, Student.Internship_Year " +
+                "FROM Student " +
+                "WHERE Student.StudID = " + sCode);
+                return View(students.FirstOrDefault());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Student");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditStudent([Bind(Include = "StudID, fName, lName, Major_ID, Company, Experience, Internship_Year")] Student students)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(students).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
+        [HttpGet]
+        public ActionResult DeleteStudent(int sCode)
+        {
+            IEnumerable<Student> students = //we are creating a collection of student_major model objects or a collection of data 
+                                db.Database.SqlQuery<Student>("SELECT Student.StudID, Student.fName, " +
+                "Student.lName, Student.Major_ID, Student.Company, Student.Experience, Student.Internship_Year " +
+                "FROM Student " +
+                "WHERE Student.StudID = " + sCode);
+            Student oStudent = students.FirstOrDefault();
             return View(oStudent);
         }
 
         [HttpPost]
-        public ActionResult DeleteStudent(Student myModel, int id)
+        public ActionResult DeleteStudent(Student myModel, int? sCode)
         {
-            var obj = lstStudents.FirstOrDefault(x => x.StudID == id);
-            if (obj != null)
+            if (sCode != null)
             {
-                lstStudents.Remove(obj);
+                db.Database.ExecuteSqlCommand("DELETE FROM Student WHERE Student.StudID = " + sCode);
             }
-
-            return View("Index", lstStudents);
+            return RedirectToAction("Index");
         }
     }
 }

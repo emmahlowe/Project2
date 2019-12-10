@@ -47,70 +47,60 @@ namespace BootStrapProjectOne.Controllers
                 return View();
             }
         }
-        //public ActionResult AddStudent(Student myaStudent)
-        //{
-        //if (ModelState.IsValid)
-        //{
-
-        //    myaStudent.StudID = lstISStudent.Count() + 1;
-        //    lstISStudent.Add(myaStudent);
-        //    ViewBag.Student = myaStudent.fName + myaStudent.lName;
-        //    return RedirectToAction("Index", "IS");
-        //}
-        //else
-        //{
-        //    return View(myaStudent);
-        //}
-        //}
-
 
         [HttpGet]
-        public ActionResult EditStudent(int sCode)
+        public ActionResult EditStudent(int? sCode)
         {
-            Student oStudent = lstISStudent.Find(x => x.StudID == sCode);
-            return View(oStudent);
-        }
-
-        [HttpPost]
-        public ActionResult EditStudent(Student myModel)
-        {
-            var obj = lstISStudent.FirstOrDefault(x =>
-            x.StudID == myModel.StudID);
-            if (obj != null)
+            if (sCode != null)
             {
-                obj.StudID = myModel.StudID;
-                obj.fName = myModel.fName;
-                obj.lName = myModel.lName;
-                obj.Major_ID = myModel.Major_ID;
-                obj.Company = myModel.Company;
-                obj.Experience = myModel.Experience;
-                obj.Internship_Year = myModel.Internship_Year;
-
+                IEnumerable<Student> students = //we are creating a collection of student_major model objects or a collection of data 
+                                db.Database.SqlQuery<Student>("SELECT Student.StudID, Student.fName, " +
+                "Student.lName, Student.Major_ID, Student.Company, Student.Experience, Student.Internship_Year " +
+                "FROM Student " +
+                "WHERE Student.StudID = " + sCode);
+                return View(students.FirstOrDefault());
             }
-
-            return View("Index", lstISStudent);
+            else
+            {
+                return RedirectToAction("Index", "Student");
+            }
         }
-
-
+       
+        [HttpPost]
+        public ActionResult EditStudent([Bind(Include = "StudID, fName, lName, Major_ID, Company, Experience, Internship_Year")] Student students)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(students).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return View();
+            }
+        }
+        
         [HttpGet]
         public ActionResult DeleteStudent(int sCode)
         {
-            Student oStudent = lstISStudent.Find(x => x.StudID == sCode);
+            IEnumerable<Student> students = //we are creating a collection of student_major model objects or a collection of data 
+                                db.Database.SqlQuery<Student>("SELECT Student.StudID, Student.fName, " +
+                "Student.lName, Student.Major_ID, Student.Company, Student.Experience, Student.Internship_Year " +
+                "FROM Student " +
+                "WHERE Student.StudID = " + sCode);
+            Student oStudent = students.FirstOrDefault();
             return View(oStudent);
         }
 
-
         [HttpPost]
-        public ActionResult DeleteStudent(Student myModel, int sCode)
+        public ActionResult DeleteStudent(Student myModel, int? sCode)
         {
-            var obj2 = lstISStudent.FirstOrDefault(x =>
-            x.StudID == sCode);
-            if (obj2 != null)
+            if (sCode != null)
             {
-                lstISStudent.Remove(obj2);
+                db.Database.ExecuteSqlCommand("DELETE FROM Student WHERE Student.StudID = " + sCode);
             }
-
-            return View("Index", lstISStudent);
+            return RedirectToAction("Index");
         }
     }
 }
