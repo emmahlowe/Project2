@@ -14,7 +14,7 @@ namespace BootStrapProjectOne.Models
     {
         [Key]
         [HiddenInput(DisplayValue=false)] //auto incremented PK
-        public int StudID { get; set; }
+        public int? StudID { get; set; }
 
         [Display(Name = "First Name")]
         [Required]

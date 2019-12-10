@@ -2,6 +2,7 @@
 using BootStrapProjectOne.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -32,20 +33,35 @@ namespace BootStrapProjectOne.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddStudent(Student myaStudent)
+        public ActionResult AddStudent([Bind(Include = "StudID, fName, lName, Major_ID, Company, Experience, Internship_Year")] Student students)
         {
             if (ModelState.IsValid)
             {
-                myaStudent.StudID = lstISStudent.Count() + 1;
-                lstISStudent.Add(myaStudent);
-                ViewBag.Student = myaStudent.fName + myaStudent.lName;
+                //db.Entry(students).State = EntityState.Added;
+                db.Students.Add(students);
+                db.SaveChanges();
                 return RedirectToAction("Index", "IS");
             }
             else
             {
-                return View(myaStudent);
+                return View();
             }
         }
+        //public ActionResult AddStudent(Student myaStudent)
+        //{
+        //if (ModelState.IsValid)
+        //{
+
+        //    myaStudent.StudID = lstISStudent.Count() + 1;
+        //    lstISStudent.Add(myaStudent);
+        //    ViewBag.Student = myaStudent.fName + myaStudent.lName;
+        //    return RedirectToAction("Index", "IS");
+        //}
+        //else
+        //{
+        //    return View(myaStudent);
+        //}
+        //}
 
 
         [HttpGet]
