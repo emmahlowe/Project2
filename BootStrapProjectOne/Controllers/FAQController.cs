@@ -1,6 +1,7 @@
 ﻿using BootStrapProjectOne.DAL;
 using BootStrapProjectOne.Models;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -22,13 +23,8 @@ namespace BootStrapProjectOne.Controllers
             new Question{ Question_ID = 2, sQuestion = "What was the hardest part about trying to decide which company to intern at?" },
             new Question{ Question_ID = 3, sQuestion = "What if I get an internship with a company and then decide that I don't like it?" }
         };
-        
-        
-        //public ActionResult Faq()
-        //{
-        //    ViewData["Answers"] = lstAnswers;
-        //    return View(lstQuestions);
-        //}
+
+
 
         public ActionResult Faq()
         {
@@ -39,9 +35,14 @@ namespace BootStrapProjectOne.Controllers
             IEnumerable<Answer> Answers =
                db.Database.SqlQuery<Answer>("SELECT Answer_ID, sAnswer, Question_ID " +
                    "FROM Answer ");
-            //what is IEnumerable vs a list of answer objects?
-            //How can I convert to a list of answer objects or how can I pass two IEnumerable back to the view and work with it in razor?
-            ViewData["Answers"] = Answers;
+            //var FAQs = db.MissionQuestions.Where(x => x.MissionID == mission.MissionID);
+            lstAnswers.Clear();
+
+            foreach(Answer element in Answers)
+            {
+                lstAnswers.Add(element);
+            }
+            
             ViewData["Answers"] = lstAnswers;
             return View(Questions);
         }
@@ -51,24 +52,6 @@ namespace BootStrapProjectOne.Controllers
         {
             return View();
         }
-
-        //[HttpPost]
-        //public ActionResult CreateFaq(Question oQuestion)
-        //{
-        //    oQuestion.Question_ID = lstQuestions.Count + 1;
-        //    ViewData["Answers"] = lstAnswers;
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        lstQuestions.Add(oQuestion);
-        //        return View("Faq", lstQuestions);
-        //    }
-        //    else //If validation fails, we will essentially reload the AddQuestion page, with the errors thrown and displayed
-        //    {
-        //        var errors = ModelState.Values.SelectMany(v => v.Errors);
-        //        return View(oQuestion);
-        //    }
-        //}
 
         [HttpPost]
         public ActionResult CreateFaq([Bind(Include = "Question_ID, sQuestion")] Question questions)
@@ -89,30 +72,35 @@ namespace BootStrapProjectOne.Controllers
         [HttpGet] //Display Edit form
         public ActionResult EditQuestion(int? sCode)
         {
-            Question oQuestion = lstQuestions.Find(x => x.Question_ID == sCode);
-
-            return View(oQuestion);
-        }
-
-        [HttpPost]
-        public ActionResult EditQuestion(Question thisModel)
-        {
-            var obj = lstQuestions.FirstOrDefault(x => x.Question_ID == thisModel.Question_ID); //We set this object obj equal to the Question_ID it finds in the list
-
-            if (obj != null)
+            if (sCode != null)
             {
-                if (ModelState.IsValid)
-                {
-                    obj.Question_ID = thisModel.Question_ID;
-                    obj.sQuestion = thisModel.sQuestion;
-                }
-                else
-                {
-                    return RedirectToAction("Faq", "FAQ");
-                }
+                IEnumerable<Question> questions = //we are creating a collection of student_major model objects or a collection of data 
+                                db.Database.SqlQuery<Question>("SELECT Question_ID, sQuestion " +
+                "FROM Question " +
+                "WHERE Question_ID = " + sCode);
+                return View(questions.FirstOrDefault());
             }
-            ViewData["Answers"] = lstAnswers;
-            return RedirectToAction("Faq", "FAQ");
+            else
+            {
+                return RedirectToAction("Faq");
+            }
+            //Question oQuestion = lstQuestions.Find(x => x.Question_ID == sCode);
+
+            //return View(oQuestion);
+        }
+        [HttpPost]
+        public ActionResult EditQuestion([Bind(Include = "Question_ID, sQuestion")] Question questions)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(questions).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Faq");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult FullWidth()
@@ -133,22 +121,15 @@ namespace BootStrapProjectOne.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddAnswer(Answer myAnswer, int sCode) //returns answer model and question id
+        public ActionResult AddAnswer(Answer answer)
         {
-            if (myAnswer.sAnswer != null)
-            {
-                Answer oAnswer = myAnswer;
-                oAnswer.Question_ID = QuestionID;
-                oAnswer.Answer_ID = lstAnswers.Count() + 1;
-                lstAnswers.Add(oAnswer); //add answer to list 
-                ViewData["Answers"] = lstAnswers; //passing data to the view
-                return View("Faq", lstQuestions);
-            }
-            else
-            {
-                return View();
-            }
-            
+            var oAnswer = new Answer();
+            oAnswer.Question_ID = QuestionID;
+            oAnswer.sAnswer = answer.sAnswer;
+
+             db.Answers.Add(oAnswer);
+                db.SaveChanges();
+                return RedirectToAction("Faq");
         }
     }
 }

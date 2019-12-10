@@ -39,7 +39,8 @@
                             <a href="@sRef" data-parent="#accordion" data-toggle="collapse" class="accordion-toggle collapsed">
                                 @Html.DisplayFor(modelItem => item.sQuestion)
                             </a>
-                            <input id="FAQEdit" type="button" value="Edit" style="margin-left: 20px;" class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("EditQuestion", "FAQ", new { iCode = item.Question_ID })'" />
+                            <input id="FAQEdit" type="button" value="Edit" style="margin-left: 20px;" class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("EditQuestion", "FAQ", new { sCode = item.Question_ID })'" />
+                            @*<input id="FAQEdit" type="button" value="Delete Question" style="margin-left: 20px;" class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("DeleteQuestion", "FAQ", new { sCode = item.Question_ID })'" />*@
                             <input id="CreateAnswer" type="button" value="Add Answer" style="margin-left: 20px;" class="btn btn-sm btn-info" onclick="location.href='@Url.Action("AddAnswer", "FAQ", new { sCode = item.Question_ID })'" />
                         </h4>
                     </div>
