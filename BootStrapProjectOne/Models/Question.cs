@@ -13,7 +13,7 @@ namespace BootStrapProjectOne.Models
     {
         [Key]
         [HiddenInput(DisplayValue = false)]
-        public int Question_ID { get; set; }
+        public int? Question_ID { get; set; }
 
         [Required(ErrorMessage = "Please enter a question.")]
         [Display(Name = "Question")]

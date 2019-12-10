@@ -1,4 +1,5 @@
-﻿using BootStrapProjectOne.Models;
+﻿using BootStrapProjectOne.DAL;
+using BootStrapProjectOne.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -10,6 +11,8 @@ namespace BootStrapProjectOne.Controllers
     
     public class FAQController : Controller
     {
+        private Project2Context db = new Project2Context();
+
         public static List<Answer> lstAnswers = new List<Answer>();
         public static int QuestionID;
 
@@ -21,10 +24,26 @@ namespace BootStrapProjectOne.Controllers
         };
         
         
+        //public ActionResult Faq()
+        //{
+        //    ViewData["Answers"] = lstAnswers;
+        //    return View(lstQuestions);
+        //}
+
         public ActionResult Faq()
         {
+            IEnumerable<Question> Questions =
+               db.Database.SqlQuery<Question>("SELECT Question_ID, sQuestion " +
+                   "FROM Question ");
+
+            IEnumerable<Answer> Answers =
+               db.Database.SqlQuery<Answer>("SELECT Answer_ID, sAnswer, Question_ID " +
+                   "FROM Answer ");
+            //what is IEnumerable vs a list of answer objects?
+            //How can I convert to a list of answer objects or how can I pass two IEnumerable back to the view and work with it in razor?
+            ViewData["Answers"] = Answers;
             ViewData["Answers"] = lstAnswers;
-            return View(lstQuestions);
+            return View(Questions);
         }
 
         [HttpGet]
@@ -33,29 +52,44 @@ namespace BootStrapProjectOne.Controllers
             return View();
         }
 
-        [HttpPost]
-        public ActionResult CreateFaq(Question oQuestion)
-        {
-            oQuestion.Question_ID = lstQuestions.Count + 1;
-            ViewData["Answers"] = lstAnswers;
+        //[HttpPost]
+        //public ActionResult CreateFaq(Question oQuestion)
+        //{
+        //    oQuestion.Question_ID = lstQuestions.Count + 1;
+        //    ViewData["Answers"] = lstAnswers;
 
+        //    if (ModelState.IsValid)
+        //    {
+        //        lstQuestions.Add(oQuestion);
+        //        return View("Faq", lstQuestions);
+        //    }
+        //    else //If validation fails, we will essentially reload the AddQuestion page, with the errors thrown and displayed
+        //    {
+        //        var errors = ModelState.Values.SelectMany(v => v.Errors);
+        //        return View(oQuestion);
+        //    }
+        //}
+
+        [HttpPost]
+        public ActionResult CreateFaq([Bind(Include = "Question_ID, sQuestion")] Question questions)
+        {
             if (ModelState.IsValid)
             {
-                lstQuestions.Add(oQuestion);
-                return View("Faq", lstQuestions);
+                db.Questions.Add(questions);
+                db.SaveChanges();
+                return RedirectToAction("Faq");
             }
-            else //If validation fails, we will essentially reload the AddQuestion page, with the errors thrown and displayed
+            else
             {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                return View(oQuestion);
+                return View();
             }
         }
 
         //Edit
         [HttpGet] //Display Edit form
-        public ActionResult EditQuestion(int? iCode)
+        public ActionResult EditQuestion(int? sCode)
         {
-            Question oQuestion = lstQuestions.Find(x => x.Question_ID == iCode);
+            Question oQuestion = lstQuestions.Find(x => x.Question_ID == sCode);
 
             return View(oQuestion);
         }
@@ -92,14 +126,14 @@ namespace BootStrapProjectOne.Controllers
         }
 
         [HttpGet]
-        public ActionResult AddAnswer(int id)//returns question id
+        public ActionResult AddAnswer(int sCode)//returns question id
         {
-            QuestionID = id;
+            QuestionID = sCode;
             return View();
         }
 
         [HttpPost]
-        public ActionResult AddAnswer(Answer myAnswer, int id) //returns answer model and question id
+        public ActionResult AddAnswer(Answer myAnswer, int sCode) //returns answer model and question id
         {
             if (myAnswer.sAnswer != null)
             {
@@ -114,17 +148,7 @@ namespace BootStrapProjectOne.Controllers
             {
                 return View();
             }
-
-            //int iQuestions = lstQuestions.Count();
-            //var dictAnswers = new Dictionary<int, dynamic>();
-
-            //for (int iCount = 0; iCount < iQuestions; iCount++ )
-            //{
-            //    dictAnswers.Add(iCount, public static List<Answer> dictListAnswers = new List<Answer>() );
-                
-            //}
-
-            //array of lists. Each list is a list of the answers that belong to a given question.
+            
         }
     }
 }
